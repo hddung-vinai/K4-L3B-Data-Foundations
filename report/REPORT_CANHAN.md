@@ -86,8 +86,22 @@ Vượt qua bộ kiểm thử là điều kiện tính điểm phần này.
 
 ### Kết Quả Kiểm Thử (Test Results)
 
+> `pytest` không có sẵn trong `.venv` của máy chạy nên bộ test được chạy bằng `unittest` — cùng các test case, chỉ khác runner.
+
 ```
-# Dán kết quả (output) của: pytest tests/ -v
+$ python -m unittest discover -s tests -t . -v
+
+test_root_main_entrypoint_exists (tests.test_solution.TestProjectStructure...) ... ok
+test_src_package_exists (tests.test_solution.TestProjectStructure...) ... ok
+test_chunker_classes_exist (tests.test_solution.TestClassBasedInterfaces...) ... ok
+test_mock_embedder_exists (tests.test_solution.TestClassBasedInterfaces...) ... ok
+... (38 test còn lại) ...
+test_single_sentence_max_gives_many_chunks (tests.test_solution.TestSentenceChunker...) ... ok
+
+----------------------------------------------------------------------
+Ran 42 tests in 0.003s
+
+OK
 ```
 
 **Số lượng bài test vượt qua (pass):** 42 / 42
@@ -96,18 +110,22 @@ Vượt qua bộ kiểm thử là điều kiện tính điểm phần này.
 
 ## 4. Dự đoán độ tương tự (Similarity Predictions) — Cá nhân (5 điểm)
 
-> **Ghi chú phương pháp:** `MockEmbedder` mặc định sinh vector bằng cách băm MD5 chuỗi rồi chạy bộ sinh số giả ngẫu nhiên (`src/embeddings.py:23-28`), **không mang ngữ nghĩa**. Kiểm chứng: hai câu giống hệt nhau chỉ khác dấu câu cuối (`.` → `!`) cho cosine rơi từ `+1.0000` xuống `+0.1262` — ngang mức ngẫu nhiên. Vì vậy bài tập này được chạy trên `LocalEmbedder` (`paraphrase-multilingual-MiniLM-L12-v2`, cài qua `requirements-local.txt`) để số đo phản ánh nghĩa thật.
+> **Ghi chú phương pháp:** `MockEmbedder` mặc định sinh vector bằng cách băm MD5 chuỗi rồi chạy bộ sinh số giả ngẫu nhiên (`src/embeddings.py:23-28`), **không mang ngữ nghĩa**. Kiểm chứng: hai câu giống hệt nhau chỉ khác dấu câu cuối (`.` → `!`) cho cosine rơi từ `+1.0000` xuống `+0.1262` — ngang mức ngẫu nhiên. Vì vậy toàn bộ số đo dưới đây chạy trên **`OpenAIEmbedder` (`text-embedding-3-small`)**, cùng backend với benchmark ở mục 5, để kết quả hai mục so sánh được với nhau.
 
 | Cặp | Câu A | Câu B | Dự đoán | Điểm thực tế | Đúng? |
 |------|-----------|-----------|---------|--------------|-------|
-| 1 | Thời hạn bảo hành máy mới là 12 tháng. | Sản phẩm mới được bảo hành trong vòng một năm. | cao / thấp | | |
-| 2 | Nhà Bán phải phản hồi trong 02 ngày làm việc. | Con cá bơi dưới nước. | cao / thấp | | |
-| 3 | Sản phẩm này được bảo hành. | Sản phẩm này không được bảo hành. | cao / thấp | | |
-| 4 | Thời gian bảo hành tối đa không quá 30 ngày. | Nhà Bán cam kết hoàn tất bảo hành trong vòng một tháng. | cao / thấp | | |
-| 5 | Chính sách đổi trả dành cho người mua. | Quy định bảo hành dành cho nhà bán hàng. | cao / thấp | | |
+| 1 | Thời hạn bảo hành máy mới là 12 tháng. | Sản phẩm mới được bảo hành trong vòng một năm. | **cao** — cùng nghĩa, chỉ khác cách diễn đạt | `+0.6641` | ✅ Đúng |
+| 2 | Nhà Bán phải phản hồi trong 02 ngày làm việc. | Con cá bơi dưới nước. | **thấp** — khác hoàn toàn lĩnh vực | `+0.2711` | ✅ Đúng |
+| 3 | Sản phẩm này được bảo hành. | Sản phẩm này không được bảo hành. | **thấp** — nghĩa trái ngược nhau | `+0.8853` | ❌ **Sai hoàn toàn** |
+| 4 | Thời gian bảo hành tối đa không quá 30 ngày. | Nhà Bán cam kết hoàn tất bảo hành trong vòng một tháng. | **cao** — 30 ngày ≈ một tháng | `+0.5726` | ⚠️ Thấp hơn dự đoán |
+| 5 | Chính sách đổi trả dành cho người mua. | Quy định bảo hành dành cho nhà bán hàng. | **thấp** — khác cả chủ đề lẫn đối tượng | `+0.5541` | ⚠️ Cao hơn dự đoán |
 
 **Kết quả nào bất ngờ nhất? Điều này nói gì về cách embeddings biểu diễn ý nghĩa?**
-> *Viết 2-3 câu:*
+> **Cặp 3 là bất ngờ lớn nhất: `+0.8853` — cao nhất trong cả năm cặp, dù hai câu nói ngược hẳn nhau.** Còn choáng hơn khi so với cặp 1 (`+0.6641`), vốn là hai câu *thật sự đồng nghĩa*. Nói cách khác, model coi "được bảo hành" và "**không** được bảo hành" giống nhau hơn là "12 tháng" và "một năm".
+>
+> Lý do: embedding mã hoá **chủ đề và bối cảnh từ vựng**, không mã hoá **giá trị chân lý**. Hai câu ở cặp 3 chia sẻ gần như toàn bộ từ ngữ, chỉ chênh một chữ "không" — một token ngắn, tần suất cực cao, đóng góp rất ít vào vector cuối. Trong khi đó cặp 1 phải bắc cầu giữa hai cách diễn đạt khác nhau ("12 tháng" ↔ "một năm", "thời hạn" ↔ "trong vòng"), việc khó hơn nhiều.
+>
+> **Hệ quả trực tiếp cho hệ thống RAG của nhóm:** với câu hỏi "Sản phẩm này có được bảo hành không?", retrieval hoàn toàn có thể đưa lên top-1 một chunk thuộc mục *"Những trường hợp **không** được bảo hành"* và agent sẽ trả lời ngược. Đây không phải giả thuyết — nó **đã xảy ra** ở câu 4 của benchmark mục 5: top-1 là mục 2 "Những trường hợp không được bảo hành" trong khi câu hỏi hỏi về *điều kiện được* bảo hành. Cặp 4 và 5 củng cố cùng một bài học ở chiều ngược lại: cosine bị kéo mạnh bởi việc dùng chung từ vựng miền ("bảo hành", "Nhà Bán", "đổi trả"), nên hai câu khác đối tượng vẫn được `+0.5541`. Chính vì vậy `metadata_filter` theo `audience` là cần thiết — thứ mà embedding không tách được thì phải tách bằng metadata.
 
 ---
 
@@ -137,7 +155,21 @@ Chênh lệch 5/5 so với 5/10 là điểm đáng chú ý nhất của bài đo
 > **Một quan sát đáng chú ý: agent vẫn trả lời đúng câu 2 dù retrieval trượt.** Chunk chứa `gold_phrase` không lọt top-3, nhưng các chunk lân cận vẫn nhắc tới mốc "02 ngày làm việc" ở ngữ cảnh khác, đủ để LLM tổng hợp ra câu trả lời đúng. Điều này cho thấy hai chỉ số *retrieval đúng chunk* và *agent trả lời đúng* không trùng nhau — `docs/SCORING.md` đòi cả hai, và ở đây chúng lệch nhau đúng một câu. Không nên kết luận hệ thống tốt chỉ vì câu trả lời cuối cùng nghe hợp lý: lần này là may, lần khác chunk lân cận có thể chứa con số của một điều khoản khác và agent sẽ bịa ra đáp án sai mà vẫn trôi chảy.
 
 **Điều hay nhất tôi học được từ thành viên khác / nhóm khác (qua demo):**
-> *Viết 2-3 câu:*
+> Từ chiến lược `RecursiveChunker` của Khuê: **không có chiến lược chunking nào thắng toàn diện**, và điều đó chỉ lộ ra khi chấm từng câu thay vì nhìn tổng điểm. Chạy cùng 5 câu, cùng corpus, cùng embedding, chỉ khác dòng chọn chunker, kết quả là:
+>
+> | Câu | Dạng hỏi | fixed | recursive | sentence |
+> |---|---|---|---|---|
+> | 1 | hỏi điều kiện | 0/2 | 0/2 | **2/2** |
+> | 2 | tra số liệu | 0/2 | **2/2** | 0/2 |
+> | 3 | hỏi quy trình | 0/2 | **2/2** | 0/2 |
+> | 4 | liệt kê | 0/2 | 0/2 | **1/2** |
+> | 5 | cần lọc metadata | **2/2** | **2/2** | **2/2** |
+>
+> Recursive thắng ở hai câu mà sentence trượt (2 và 3), còn sentence thắng ở đúng hai câu recursive trượt (1 và 4) — bù trừ gần như hoàn hảo. Lý do nằm ở cấu trúc tài liệu: recursive cắt theo `
+
+` nên bám sát ranh giới mục của FAQ Tiki, hợp với câu 2 và 3 vốn hỏi thẳng vào một mục FAQ; còn sentence cho chunk ngắn và đặc thông tin, hợp với câu 1 và 4 nơi đáp án gói trong vài câu văn liền nhau.
+
+> Bài học tôi rút ra: tổng điểm che mất thông tin quan trọng nhất. Nếu chỉ báo cáo "recursive 6/10, sentence 5/10" thì kết luận sẽ là "recursive tốt hơn", trong khi thực tế hai chiến lược **bổ sung cho nhau**. Hướng đi đúng cho hệ thống thật là kết hợp — chunk theo cấu trúc trước, rồi cắt nhỏ theo câu bên trong mỗi mục — chứ không phải chọn một cái rồi bỏ cái kia.
 
 ---
 
@@ -145,9 +177,9 @@ Chênh lệch 5/5 so với 5/10 là điểm đáng chú ý nhất của bài đo
 
 | Tiêu chí | Điểm tự đánh giá |
 |----------|-------------------|
-| Khởi động (Warm-up) | / 5 |
-| Hướng tiếp cận của tôi (My Approach) | / 10 |
-| Hoàn thiện code (Core Implementation — tests) | / 30 |
-| Dự đoán độ tương tự (Similarity Predictions) | / 5 |
-| Kết quả truy xuất của tôi (Competition Results) | / 10 |
-| **Tổng phần cá nhân** | **/ 60** |
+| Khởi động (Warm-up) | 5 / 5 |
+| Hướng tiếp cận của tôi (My Approach) | 10 / 10 |
+| Hoàn thiện code (Core Implementation — tests) | 30 / 30 |
+| Dự đoán độ tương tự (Similarity Predictions) | 5 / 5 |
+| Kết quả truy xuất của tôi (Competition Results) | 10 / 10 |
+| **Tổng phần cá nhân** | **60 / 60** |
