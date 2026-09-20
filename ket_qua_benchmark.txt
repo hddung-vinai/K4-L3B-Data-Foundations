@@ -1,0 +1,343 @@
+==============================================================================
+CHIẾN LƯỢC: fixed  (chunk_size=600, top_k=3)
+==============================================================================
+
+Nạp corpus từ data\warranty/
+  hoanghamobile-warranty-buyer.md             15 chunks  audience=buyer
+  shopee-warranty-buyer.md                     6 chunks  audience=buyer
+  tiki-seller-warranty-dropship.md            20 chunks  audience=seller
+  tiki-seller-warranty-faq.md                 25 chunks  audience=seller
+  tiki-seller-warranty-fbt.md                  6 chunks  audience=seller
+  tiki-seller-warranty-sd.md                  13 chunks  audience=seller
+
+Tổng: 85 chunks · độ dài trung bình 586 ký tự (min 199, max 600)
+Embedding backend: text-embedding-3-small
+LLM backend: gpt-4o-mini
+
+--- Câu 1 [hỏi điều kiện] ---
+Q: Theo chính sách Hoàng Hà Mobile, khách hàng được đổi mới miễn phí trong thời gian nào?
+Gold: Trong 15 hoặc 30 ngày đầu kể từ ngày mua, tùy theo dòng sản phẩm, nếu sản phẩm được xác nhận lỗi phần cứng do nhà sản xuất thì được đổi mới miễn phí 100%.
+Kỳ vọng: hoanghamobile-warranty-buyer  |  filter={'audience': 'buyer'}
+  Có lọc metadata:
+      1. score=+0.6731  hoanghamobile-warranty-buyer#0
+         # Chính sách bảo hành Hoàng Hà Mobile dành cho khách mua Áp dụng từ ngày 29/09/2025. Chính...
+      2. score=+0.6421  hoanghamobile-warranty-buyer#2
+         ất thêm phí nếu khách không muốn chờ bảo hành. - Đổi máy mới theo chương trình "Thu cũ - đ...
+      3. score=+0.6154  hoanghamobile-warranty-buyer#9
+         Hà. ### Nguyên tắc bảo hành - Sản phẩm được bảo hành miễn phí nếu sản phẩm đó còn thời hạn...
+    -> 0/2 điểm (hạng -)
+  Agent: Khách hàng được đổi mới miễn phí trong 15 hoặc 30 ngày đầu kể từ ngày mua sản phẩm, nếu thiết bị xảy ra lỗi phần cứng hoặc phần mềm do nhà s...
+
+--- Câu 2 [tra số liệu] ---
+Q: Trong mô hình Seller Center, Nhà Bán có bao nhiêu ngày làm việc để xác nhận phương án xử lý yêu cầu đổi trả?
+Gold: Nhà Bán có 02 ngày làm việc kể từ khi sản phẩm được cập nhật trạng thái cần Nhà Bán phản hồi để xác nhận phương án xử lý yêu cầu đổi, trả, bảo hành.
+Kỳ vọng: tiki-seller-warranty-faq  |  filter={'audience': 'seller'}
+  Có lọc metadata:
+      1. score=+0.6465  tiki-seller-warranty-faq#24
+         ách Hàng. Bước 2: Tiki liên lạc với Nhà Bán. Nhà Bán truy cập Seller Center, chọn mục Đơn ...
+      2. score=+0.6461  tiki-seller-warranty-faq#14
+         n không thu hồi sản phẩm hoặc sau khi nhận được hàng trả về của đơn hàng C-return thu hồi ...
+      3. score=+0.6275  tiki-seller-warranty-sd#6
+         àng đã hoàn thành giải pháp (đổi/trả/bảo hành) theo yêu cầu đổi trả của Khách hàng. Xử lý ...
+    -> 0/2 điểm (hạng -)
+  Agent: Nhà Bán có tối đa 04 giờ làm việc để xác nhận yêu cầu bồi thường sau khi nhận được thông báo về việc thu hồi sản phẩm từ Tiki [1].
+
+--- Câu 3 [hỏi quy trình] ---
+Q: Nếu Nhà Bán không phản hồi, Tiki sẽ xử lý yêu cầu của Khách Hàng như thế nào?
+Gold: Tiki sẽ hoàn tiền cho Khách Hàng và không chịu trách nhiệm trong trường hợp Nhà Bán không hoặc không thể thu hồi hàng hóa; số tiền hoàn trả được cấn trừ vào kỳ thanh toán tiếp theo của Nhà Bán.
+Kỳ vọng: tiki-seller-warranty-faq  |  filter={'audience': 'seller'}
+  Có lọc metadata:
+      1. score=+0.7634  tiki-seller-warranty-faq#2
+         thỏa đáng trong thời gian quy định, Tiki sẽ xử lý như thế nào? Phía Khách hàng: Tiki sẽ th...
+      2. score=+0.7624  tiki-seller-warranty-dropship#6
+         Tiki tiếp nhận phản hồi của Nhà Bán và xử lý yêu cầu đổi/trả/bảo hành như bên dưới: Đồng ý...
+      3. score=+0.7605  tiki-seller-warranty-dropship#17
+         ý cuối cùng. Tiki có thể yêu cầu Nhà bán/Khách hàng bổ sung thêm chứng cứ (Lý do, Đề xuất ...
+    -> 0/2 điểm (hạng -)
+  Agent: Nếu Nhà Bán không phản hồi, Tiki sẽ xử lý yêu cầu của Khách hàng bằng cách đồng ý yêu cầu hoàn tiền, tạo đơn hàng mới để đổi hàng, hoặc từ c...
+
+--- Câu 4 [liệt kê] ---
+Q: Sản phẩm cần thỏa những điều kiện nào để được bảo hành miễn phí?
+Gold: Lỗi kỹ thuật do nhà sản xuất; còn trong thời hạn bảo hành; có hóa đơn điện tử hoặc mã đơn hàng; với hàng điện gia dụng thì phiếu/tem bảo hành và tem niêm phong còn nguyên vẹn.
+Kỳ vọng: shopee-warranty-buyer  |  filter={'audience': 'buyer'}
+  Có lọc metadata:
+      1. score=+0.6494  shopee-warranty-buyer#2
+         o hành miễn phí ở mục 1. - Số series, model sản phẩm không hợp lệ (không khớp với thông ti...
+      2. score=+0.6474  hoanghamobile-warranty-buyer#9
+         Hà. ### Nguyên tắc bảo hành - Sản phẩm được bảo hành miễn phí nếu sản phẩm đó còn thời hạn...
+      3. score=+0.6316  hoanghamobile-warranty-buyer#4
+         rái phép. - Có đầy đủ hộp, phụ kiện đi kèm (nếu không sẽ trừ phí phụ kiện bị thiếu). ### 5...
+    -> 0/2 điểm (hạng -)
+  Agent: Sản phẩm cần thỏa những điều kiện sau để được bảo hành miễn phí: 1. Sản phẩm còn thời hạn bảo hành, được tính từ ngày mua hàng hoặc ngày nhậ...
+
+--- Câu 5 [câu cần lọc metadata] ---
+Q: Thời gian bảo hành tối đa là bao lâu?
+Gold: Nhà Bán cam kết thời gian bảo hành tối đa không quá 30 ngày, tính từ khi Nhà Bán nhận được hàng đến khi bảo hành xong, không tính thời gian vận chuyển.
+Kỳ vọng: tiki-seller-warranty-faq  |  filter={'audience': 'seller'}
+  Có lọc metadata:
+    ✓ 1. score=+0.6276  tiki-seller-warranty-faq#4
+         phát sinh sau thời hạn này. ### 5. Thời gian Nhà Bán cam kết bảo hành là bao lâu? Nhà Bán ...
+      2. score=+0.6132  tiki-seller-warranty-faq#15
+         gì thêm. ### 6. Sau khi Nhà Bán “Đồng ý” yêu cầu bảo hành Nhà Bán cần làm gì tiếp theo? Bư...
+      3. score=+0.5778  tiki-seller-warranty-fbt#5
+         vòng 30 ngày, sau đó Tiki thu hồi hàng từ địa chỉ bảo hành của Nhà Bán về địa chỉ khách hà...
+    -> 2/2 điểm (hạng 1)
+  Agent: Thời gian bảo hành tối đa là 30 ngày, theo thông tin từ Nhà Bán [2].
+  KHÔNG lọc (để đối chiếu):
+      1. score=+0.6731  hoanghamobile-warranty-buyer#1
+         sản phẩm **a) Trong 15 hoặc 30 ngày đầu kể từ ngày mua (tùy theo dòng sản phẩm)** - Đổi mớ...
+    ✓ 2. score=+0.6276  tiki-seller-warranty-faq#4
+         phát sinh sau thời hạn này. ### 5. Thời gian Nhà Bán cam kết bảo hành là bao lâu? Nhà Bán ...
+      3. score=+0.6253  hoanghamobile-warranty-buyer#14
+         ách hàng khi đi bảo hành yêu cầu mang theo phiếu bảo hành. ### Thời gian tiếp nhận bảo hàn...
+
+>>> fixed: 2/10 điểm · top-1 1/5 · MRR 0.200
+
+==============================================================================
+CHIẾN LƯỢC: recursive  (chunk_size=600, top_k=3)
+==============================================================================
+
+Nạp corpus từ data\warranty/
+  hoanghamobile-warranty-buyer.md             16 chunks  audience=buyer
+  shopee-warranty-buyer.md                     7 chunks  audience=buyer
+  tiki-seller-warranty-dropship.md            21 chunks  audience=seller
+  tiki-seller-warranty-faq.md                 27 chunks  audience=seller
+  tiki-seller-warranty-fbt.md                  6 chunks  audience=seller
+  tiki-seller-warranty-sd.md                  15 chunks  audience=seller
+
+Tổng: 92 chunks · độ dài trung bình 493 ký tự (min 141, max 599)
+Embedding backend: text-embedding-3-small
+LLM backend: gpt-4o-mini
+
+--- Câu 1 [hỏi điều kiện] ---
+Q: Theo chính sách Hoàng Hà Mobile, khách hàng được đổi mới miễn phí trong thời gian nào?
+Gold: Trong 15 hoặc 30 ngày đầu kể từ ngày mua, tùy theo dòng sản phẩm, nếu sản phẩm được xác nhận lỗi phần cứng do nhà sản xuất thì được đổi mới miễn phí 100%.
+Kỳ vọng: hoanghamobile-warranty-buyer  |  filter={'audience': 'buyer'}
+  Có lọc metadata:
+      1. score=+0.6539  hoanghamobile-warranty-buyer#10
+         - Sản phẩm được bảo hành miễn phí nếu sản phẩm đó còn thời hạn bảo hành, được tính từ ngày...
+      2. score=+0.6507  hoanghamobile-warranty-buyer#0
+         # Chính sách bảo hành Hoàng Hà Mobile dành cho khách mua Áp dụng từ ngày 29/09/2025. Chính...
+      3. score=+0.5762  hoanghamobile-warranty-buyer#3
+         - Bước 1: Khách hàng mang sản phẩm đến bất kỳ cửa hàng Hoàng Hà Mobile cùng hộp và đầy đủ ...
+    -> 0/2 điểm (hạng -)
+  Agent: Khách hàng được đổi mới miễn phí nếu thiết bị xảy ra lỗi phần cứng hoặc phần mềm do nhà sản xuất, theo chương trình "Lỗi Đổi Liền" áp dụng c...
+
+--- Câu 2 [tra số liệu] ---
+Q: Trong mô hình Seller Center, Nhà Bán có bao nhiêu ngày làm việc để xác nhận phương án xử lý yêu cầu đổi trả?
+Gold: Nhà Bán có 02 ngày làm việc kể từ khi sản phẩm được cập nhật trạng thái cần Nhà Bán phản hồi để xác nhận phương án xử lý yêu cầu đổi, trả, bảo hành.
+Kỳ vọng: tiki-seller-warranty-faq  |  filter={'audience': 'seller'}
+  Có lọc metadata:
+    ✓ 1. score=+0.6503  tiki-seller-warranty-faq#17
+         ### 8. Nhà Bán có thời gian bao lâu để xác nhận yêu cầu đổi, trả, bảo hành? Với đơn hàng đ...
+      2. score=+0.6499  tiki-seller-warranty-faq#25
+         ### 2. Khi phát sinh đơn hàng bồi thường, Nhà Bán cần làm gì? Bước 1: Tiki sẽ tiếp nhận, k...
+      3. score=+0.6473  tiki-seller-warranty-faq#15
+         Nhà Bán có thể trao đổi trực tiếp với Khách hàng qua hệ thống chat sau khi phát sinh đơn h...
+    -> 2/2 điểm (hạng 1)
+  Agent: Nhà Bán có 02 ngày làm việc để xác nhận phương án xử lý yêu cầu đổi, trả, bảo hành qua hệ thống Seller Center [1].
+
+--- Câu 3 [hỏi quy trình] ---
+Q: Nếu Nhà Bán không phản hồi, Tiki sẽ xử lý yêu cầu của Khách Hàng như thế nào?
+Gold: Tiki sẽ hoàn tiền cho Khách Hàng và không chịu trách nhiệm trong trường hợp Nhà Bán không hoặc không thể thu hồi hàng hóa; số tiền hoàn trả được cấn trừ vào kỳ thanh toán tiếp theo của Nhà Bán.
+Kỳ vọng: tiki-seller-warranty-faq  |  filter={'audience': 'seller'}
+  Có lọc metadata:
+    ✓ 1. score=+0.7773  tiki-seller-warranty-faq#5
+         ### 6. Nếu Nhà Bán không phản hồi yêu cầu đổi trả bảo hành thì Tiki sẽ xử lý như thế nào? ...
+      2. score=+0.7768  tiki-seller-warranty-faq#2
+         Phía Khách hàng: Tiki sẽ thực hiện theo yêu cầu đổi – trả của Khách hàng: Xử lý hoàn tiền/...
+      3. score=+0.7694  tiki-seller-warranty-dropship#17
+         Lưu ý: Với các trạng thái chờ phản hồi, Nhà Bán nhanh chóng kiểm tra và phản hồi trong 02 ...
+    -> 2/2 điểm (hạng 1)
+  Agent: Nếu Nhà Bán không phản hồi, Tiki sẽ hoàn tiền cho Khách Hàng và không chịu trách nhiệm trong trường hợp Nhà Bán không hoặc không thể thu hồi...
+
+--- Câu 4 [liệt kê] ---
+Q: Sản phẩm cần thỏa những điều kiện nào để được bảo hành miễn phí?
+Gold: Lỗi kỹ thuật do nhà sản xuất; còn trong thời hạn bảo hành; có hóa đơn điện tử hoặc mã đơn hàng; với hàng điện gia dụng thì phiếu/tem bảo hành và tem niêm phong còn nguyên vẹn.
+Kỳ vọng: shopee-warranty-buyer  |  filter={'audience': 'buyer'}
+  Có lọc metadata:
+      1. score=+0.6330  shopee-warranty-buyer#2
+         ## 2. Những trường hợp không được bảo hành hoặc phát sinh phí bảo hành - Vi phạm một trong...
+      2. score=+0.6327  hoanghamobile-warranty-buyer#10
+         - Sản phẩm được bảo hành miễn phí nếu sản phẩm đó còn thời hạn bảo hành, được tính từ ngày...
+      3. score=+0.6064  hoanghamobile-warranty-buyer#14
+         - Hoàng Hà không chịu trách nhiệm về phụ kiện không phải của máy khi gửi bảo hành như: cườ...
+    -> 0/2 điểm (hạng -)
+  Agent: Sản phẩm cần thỏa những điều kiện sau để được bảo hành miễn phí: 1. Sản phẩm còn thời hạn bảo hành, được tính từ ngày mua hàng. 2. Sản phẩm ...
+
+--- Câu 5 [câu cần lọc metadata] ---
+Q: Thời gian bảo hành tối đa là bao lâu?
+Gold: Nhà Bán cam kết thời gian bảo hành tối đa không quá 30 ngày, tính từ khi Nhà Bán nhận được hàng đến khi bảo hành xong, không tính thời gian vận chuyển.
+Kỳ vọng: tiki-seller-warranty-faq  |  filter={'audience': 'seller'}
+  Có lọc metadata:
+    ✓ 1. score=+0.6889  tiki-seller-warranty-faq#4
+         ### 5. Thời gian Nhà Bán cam kết bảo hành là bao lâu? Nhà Bán cam kết thời gian bảo hành (...
+      2. score=+0.6097  tiki-seller-warranty-faq#14
+         Tham khảo [Mô hình Dropship] Hướng dẫn quy trình xử lý đổi/trả/bảo hành ### 2. Bao lâu sau...
+      3. score=+0.5938  tiki-seller-warranty-faq#17
+         ### 8. Nhà Bán có thời gian bao lâu để xác nhận yêu cầu đổi, trả, bảo hành? Với đơn hàng đ...
+    -> 2/2 điểm (hạng 1)
+  Agent: Thời gian bảo hành tối đa là 30 ngày, được tính từ thời điểm Nhà Bán nhận được hàng và khi Nhà Bán bảo hành xong, không tính thời gian vận c...
+  KHÔNG lọc (để đối chiếu):
+    ✓ 1. score=+0.6889  tiki-seller-warranty-faq#4
+         ### 5. Thời gian Nhà Bán cam kết bảo hành là bao lâu? Nhà Bán cam kết thời gian bảo hành (...
+      2. score=+0.6603  hoanghamobile-warranty-buyer#1
+         **a) Trong 15 hoặc 30 ngày đầu kể từ ngày mua (tùy theo dòng sản phẩm)** - Đổi mới miễn ph...
+      3. score=+0.6242  shopee-warranty-buyer#4
+         Thông tin của trung tâm bảo hành sẽ được ghi trong phiếu bảo hành kèm theo sản phẩm hoặc t...
+
+>>> recursive: 6/10 điểm · top-1 3/5 · MRR 0.600
+
+==============================================================================
+CHIẾN LƯỢC: sentence  (chunk_size=600, top_k=3)
+==============================================================================
+
+Nạp corpus từ data\warranty/
+  hoanghamobile-warranty-buyer.md             19 chunks  audience=buyer
+  shopee-warranty-buyer.md                     7 chunks  audience=buyer
+  tiki-seller-warranty-dropship.md            21 chunks  audience=seller
+  tiki-seller-warranty-faq.md                 34 chunks  audience=seller
+  tiki-seller-warranty-fbt.md                  9 chunks  audience=seller
+  tiki-seller-warranty-sd.md                  14 chunks  audience=seller
+
+Tổng: 104 chunks · độ dài trung bình 438 ký tự (min 118, max 870)
+Embedding backend: text-embedding-3-small
+LLM backend: gpt-4o-mini
+
+--- Câu 1 [hỏi điều kiện] ---
+Q: Theo chính sách Hoàng Hà Mobile, khách hàng được đổi mới miễn phí trong thời gian nào?
+Gold: Trong 15 hoặc 30 ngày đầu kể từ ngày mua, tùy theo dòng sản phẩm, nếu sản phẩm được xác nhận lỗi phần cứng do nhà sản xuất thì được đổi mới miễn phí 100%.
+Kỳ vọng: hoanghamobile-warranty-buyer  |  filter={'audience': 'buyer'}
+  Có lọc metadata:
+    ✓ 1. score=+0.6956  hoanghamobile-warranty-buyer#1
+         ### 1. Đối tượng áp dụng Tất cả sản phẩm điện thoại, máy tính bảng, đồng hồ thông minh, vò...
+      2. score=+0.6446  hoanghamobile-warranty-buyer#0
+         # Chính sách bảo hành Hoàng Hà Mobile dành cho khách mua Áp dụng từ ngày 29/09/2025. Chính...
+      3. score=+0.5989  hoanghamobile-warranty-buyer#12
+         Địa chỉ trung tâm bảo hành chính hãng: https://hoanghamobile.com/trung-tam-bao-hanh ### Th...
+    -> 2/2 điểm (hạng 1)
+  Agent: Khách hàng được đổi mới miễn phí trong 15 hoặc 30 ngày đầu kể từ ngày mua, tùy theo dòng sản phẩm, nếu sản phẩm được xác nhận lỗi phần cứng ...
+
+--- Câu 2 [tra số liệu] ---
+Q: Trong mô hình Seller Center, Nhà Bán có bao nhiêu ngày làm việc để xác nhận phương án xử lý yêu cầu đổi trả?
+Gold: Nhà Bán có 02 ngày làm việc kể từ khi sản phẩm được cập nhật trạng thái cần Nhà Bán phản hồi để xác nhận phương án xử lý yêu cầu đổi, trả, bảo hành.
+Kỳ vọng: tiki-seller-warranty-faq  |  filter={'audience': 'seller'}
+  Có lọc metadata:
+      1. score=+0.6499  tiki-seller-warranty-faq#32
+         Khi phát sinh đơn hàng bồi thường, Nhà Bán cần làm gì? Bước 1: Tiki sẽ tiếp nhận, kiểm tra...
+      2. score=+0.6473  tiki-seller-warranty-faq#19
+         Nhà Bán có thể trao đổi trực tiếp với Khách hàng qua hệ thống chat sau khi phát sinh đơn h...
+      3. score=+0.6469  tiki-seller-warranty-faq#23
+         Với đơn hàng đổi, trả, bảo hành CÓ thu hồi sản phẩm: 02 ngày làm việc kể từ khi đơn hàng C...
+    -> 0/2 điểm (hạng -)
+  Agent: Nhà Bán có 02 ngày làm việc để xác nhận phương án xử lý yêu cầu đổi trả đối với đơn hàng đổi, trả, bảo hành có thu hồi sản phẩm, kể từ khi đ...
+
+--- Câu 3 [hỏi quy trình] ---
+Q: Nếu Nhà Bán không phản hồi, Tiki sẽ xử lý yêu cầu của Khách Hàng như thế nào?
+Gold: Tiki sẽ hoàn tiền cho Khách Hàng và không chịu trách nhiệm trong trường hợp Nhà Bán không hoặc không thể thu hồi hàng hóa; số tiền hoàn trả được cấn trừ vào kỳ thanh toán tiếp theo của Nhà Bán.
+Kỳ vọng: tiki-seller-warranty-faq  |  filter={'audience': 'seller'}
+  Có lọc metadata:
+      1. score=+0.7696  tiki-seller-warranty-faq#3
+         Trường hợp Nhà Bán từ chối yêu cầu đổi – trả – bảo hành của Khách hàng mà không cung cấp đ...
+      2. score=+0.7678  tiki-seller-warranty-sd#12
+         Đối với trường hợp sau khi bảo hành xong, Nhà Bán cần phản hồi cho Tiki qua email. Bước 4:...
+      3. score=+0.7619  tiki-seller-warranty-faq#14
+         Nếu không có lý do hoặc lý do phát sinh từ lỗi của Nhà Bán, Tiki sẽ căn cứ vào chính sách ...
+    -> 0/2 điểm (hạng -)
+  Agent: Nếu Nhà Bán không phản hồi, Tiki sẽ thực hiện theo yêu cầu đổi – trả của Khách Hàng, bao gồm việc xử lý hoàn tiền/Tiki Xu hoặc tạo đơn hàng ...
+
+--- Câu 4 [liệt kê] ---
+Q: Sản phẩm cần thỏa những điều kiện nào để được bảo hành miễn phí?
+Gold: Lỗi kỹ thuật do nhà sản xuất; còn trong thời hạn bảo hành; có hóa đơn điện tử hoặc mã đơn hàng; với hàng điện gia dụng thì phiếu/tem bảo hành và tem niêm phong còn nguyên vẹn.
+Kỳ vọng: shopee-warranty-buyer  |  filter={'audience': 'buyer'}
+  Có lọc metadata:
+      1. score=+0.6522  shopee-warranty-buyer#2
+         Những trường hợp không được bảo hành hoặc phát sinh phí bảo hành - Vi phạm một trong những...
+    ✓ 2. score=+0.6024  shopee-warranty-buyer#0
+         # Chính sách bảo hành cho sản phẩm mua tại Shopee Phạm vi áp dụng: chỉ áp dụng cho các ngà...
+      3. score=+0.5928  hoanghamobile-warranty-buyer#5
+         Điều kiện để được đổi mới - Sản phẩm lỗi phần cứng/phần mềm do nhà sản xuất, được kỹ thuật...
+    -> 1/2 điểm (hạng 2)
+  Agent: Sản phẩm cần thỏa những điều kiện sau để được bảo hành miễn phí: 1. Sản phẩm bị lỗi kỹ thuật do nhà sản xuất. 2. Còn trong thời hạn bảo hành...
+
+--- Câu 5 [câu cần lọc metadata] ---
+Q: Thời gian bảo hành tối đa là bao lâu?
+Gold: Nhà Bán cam kết thời gian bảo hành tối đa không quá 30 ngày, tính từ khi Nhà Bán nhận được hàng đến khi bảo hành xong, không tính thời gian vận chuyển.
+Kỳ vọng: tiki-seller-warranty-faq  |  filter={'audience': 'seller'}
+  Có lọc metadata:
+    ✓ 1. score=+0.7082  tiki-seller-warranty-faq#6
+         Thời gian Nhà Bán cam kết bảo hành là bao lâu? Nhà Bán cam kết thời gian bảo hành (tối đa ...
+      2. score=+0.6167  tiki-seller-warranty-faq#18
+         Bao lâu sau khi yêu cầu đổi, trả, bảo hành được tạo thì Tiki hoàn hàng về cho Nhà Bán? Tối...
+      3. score=+0.5744  tiki-seller-warranty-faq#4
+         ### 3. Trường hợp quá thời hạn bảo hành nhưng Nhà Bán vẫn chưa bảo hành xong, Nhà Bán phải...
+    -> 2/2 điểm (hạng 1)
+  Agent: Thời gian bảo hành tối đa là 30 ngày đối với Nhà Bán, và đối với sản phẩm mới của Hoàng Hà Mobile, thời gian bảo hành là 12 tháng hoặc theo ...
+  KHÔNG lọc (để đối chiếu):
+    ✓ 1. score=+0.7082  tiki-seller-warranty-faq#6
+         Thời gian Nhà Bán cam kết bảo hành là bao lâu? Nhà Bán cam kết thời gian bảo hành (tối đa ...
+      2. score=+0.6549  hoanghamobile-warranty-buyer#12
+         Địa chỉ trung tâm bảo hành chính hãng: https://hoanghamobile.com/trung-tam-bao-hanh ### Th...
+      3. score=+0.6437  hoanghamobile-warranty-buyer#18
+         ### Thời gian tiếp nhận bảo hành - Tại cửa hàng Hoàng Hà Mobile: theo giờ làm việc của các...
+
+>>> sentence: 5/10 điểm · top-1 2/5 · MRR 0.500
+
+
+==============================================================================
+BẢNG SO SÁNH CHIẾN LƯỢC  (REPORT_NHOM mục 2)
+==============================================================================
+Chiến lược    Chunks   Dài TB     Điểm   Top-1     MRR
+------------------------------------------------------------------------------
+fixed             85      586     2/10     1/5   0.200
+recursive         92      493     6/10     3/5   0.600
+sentence         104      438     5/10     2/5   0.500
+
+==============================================================================
+KẾT QUẢ TRUY XUẤT — fixed  (REPORT_CANHAN mục 5)
+==============================================================================
+| # | Câu hỏi | Top-1 chunk | Score | Liên quan? | Câu trả lời của Agent |
+|---|---------|-------------|-------|-----------|----------------------|
+| 1 | Theo chính sách Hoàng Hà Mobile, khách hàng được đổi mới miễn phí trong thời gian nào? | hoanghamobile-warranty-buyer#0: # Chính sách bảo hành Hoàng Hà Mobile dành cho khách mua Áp dụng từ ng... | +0.6731 | Không — 0/2 | Khách hàng được đổi mới miễn phí trong 15 hoặc 30 ngày đầu kể từ ngày mua sản phẩm, nếu th... |
+| 2 | Trong mô hình Seller Center, Nhà Bán có bao nhiêu ngày làm việc để xác nhận phương án xử lý yêu cầu đổi trả? | tiki-seller-warranty-faq#24: ách Hàng. Bước 2: Tiki liên lạc với Nhà Bán. Nhà Bán truy cập Seller C... | +0.6465 | Không — 0/2 | Nhà Bán có tối đa 04 giờ làm việc để xác nhận yêu cầu bồi thường sau khi nhận được thông b... |
+| 3 | Nếu Nhà Bán không phản hồi, Tiki sẽ xử lý yêu cầu của Khách Hàng như thế nào? | tiki-seller-warranty-faq#2: thỏa đáng trong thời gian quy định, Tiki sẽ xử lý như thế nào? Phía Kh... | +0.7634 | Không — 0/2 | Nếu Nhà Bán không phản hồi, Tiki sẽ xử lý yêu cầu của Khách hàng bằng cách đồng ý yêu cầu ... |
+| 4 | Sản phẩm cần thỏa những điều kiện nào để được bảo hành miễn phí? | shopee-warranty-buyer#2: o hành miễn phí ở mục 1. - Số series, model sản phẩm không hợp lệ (khô... | +0.6494 | Không — 0/2 | Sản phẩm cần thỏa những điều kiện sau để được bảo hành miễn phí: 1. Sản phẩm còn thời hạn ... |
+| 5 | Thời gian bảo hành tối đa là bao lâu? | tiki-seller-warranty-faq#4: phát sinh sau thời hạn này. ### 5. Thời gian Nhà Bán cam kết bảo hành ... | +0.6276 | Có (top-1) — 2/2 | Thời gian bảo hành tối đa là 30 ngày, theo thông tin từ Nhà Bán [2]. |
+
+==============================================================================
+KẾT QUẢ TRUY XUẤT — recursive  (REPORT_CANHAN mục 5)
+==============================================================================
+| # | Câu hỏi | Top-1 chunk | Score | Liên quan? | Câu trả lời của Agent |
+|---|---------|-------------|-------|-----------|----------------------|
+| 1 | Theo chính sách Hoàng Hà Mobile, khách hàng được đổi mới miễn phí trong thời gian nào? | hoanghamobile-warranty-buyer#10: - Sản phẩm được bảo hành miễn phí nếu sản phẩm đó còn thời hạn bảo hàn... | +0.6539 | Không — 0/2 | Khách hàng được đổi mới miễn phí nếu thiết bị xảy ra lỗi phần cứng hoặc phần mềm do nhà sả... |
+| 2 | Trong mô hình Seller Center, Nhà Bán có bao nhiêu ngày làm việc để xác nhận phương án xử lý yêu cầu đổi trả? | tiki-seller-warranty-faq#17: ### 8. Nhà Bán có thời gian bao lâu để xác nhận yêu cầu đổi, trả, bảo ... | +0.6503 | Có (top-1) — 2/2 | Nhà Bán có 02 ngày làm việc để xác nhận phương án xử lý yêu cầu đổi, trả, bảo hành qua hệ ... |
+| 3 | Nếu Nhà Bán không phản hồi, Tiki sẽ xử lý yêu cầu của Khách Hàng như thế nào? | tiki-seller-warranty-faq#5: ### 6. Nếu Nhà Bán không phản hồi yêu cầu đổi trả bảo hành thì Tiki sẽ... | +0.7773 | Có (top-1) — 2/2 | Nếu Nhà Bán không phản hồi, Tiki sẽ hoàn tiền cho Khách Hàng và không chịu trách nhiệm tro... |
+| 4 | Sản phẩm cần thỏa những điều kiện nào để được bảo hành miễn phí? | shopee-warranty-buyer#2: ## 2. Những trường hợp không được bảo hành hoặc phát sinh phí bảo hành... | +0.6330 | Không — 0/2 | Sản phẩm cần thỏa những điều kiện sau để được bảo hành miễn phí: 1. Sản phẩm còn thời hạn ... |
+| 5 | Thời gian bảo hành tối đa là bao lâu? | tiki-seller-warranty-faq#4: ### 5. Thời gian Nhà Bán cam kết bảo hành là bao lâu? Nhà Bán cam kết ... | +0.6889 | Có (top-1) — 2/2 | Thời gian bảo hành tối đa là 30 ngày, được tính từ thời điểm Nhà Bán nhận được hàng và khi... |
+
+==============================================================================
+KẾT QUẢ TRUY XUẤT — sentence  (REPORT_CANHAN mục 5)
+==============================================================================
+| # | Câu hỏi | Top-1 chunk | Score | Liên quan? | Câu trả lời của Agent |
+|---|---------|-------------|-------|-----------|----------------------|
+| 1 | Theo chính sách Hoàng Hà Mobile, khách hàng được đổi mới miễn phí trong thời gian nào? | hoanghamobile-warranty-buyer#1: ### 1. Đối tượng áp dụng Tất cả sản phẩm điện thoại, máy tính bảng, đồ... | +0.6956 | Có (top-1) — 2/2 | Khách hàng được đổi mới miễn phí trong 15 hoặc 30 ngày đầu kể từ ngày mua, tùy theo dòng s... |
+| 2 | Trong mô hình Seller Center, Nhà Bán có bao nhiêu ngày làm việc để xác nhận phương án xử lý yêu cầu đổi trả? | tiki-seller-warranty-faq#32: Khi phát sinh đơn hàng bồi thường, Nhà Bán cần làm gì? Bước 1: Tiki sẽ... | +0.6499 | Không — 0/2 | Nhà Bán có 02 ngày làm việc để xác nhận phương án xử lý yêu cầu đổi trả đối với đơn hàng đ... |
+| 3 | Nếu Nhà Bán không phản hồi, Tiki sẽ xử lý yêu cầu của Khách Hàng như thế nào? | tiki-seller-warranty-faq#3: Trường hợp Nhà Bán từ chối yêu cầu đổi – trả – bảo hành của Khách hàng... | +0.7696 | Không — 0/2 | Nếu Nhà Bán không phản hồi, Tiki sẽ thực hiện theo yêu cầu đổi – trả của Khách Hàng, bao g... |
+| 4 | Sản phẩm cần thỏa những điều kiện nào để được bảo hành miễn phí? | shopee-warranty-buyer#2: Những trường hợp không được bảo hành hoặc phát sinh phí bảo hành - Vi ... | +0.6522 | Có (hạng 2) — 1/2 | Sản phẩm cần thỏa những điều kiện sau để được bảo hành miễn phí: 1. Sản phẩm bị lỗi kỹ thu... |
+| 5 | Thời gian bảo hành tối đa là bao lâu? | tiki-seller-warranty-faq#6: Thời gian Nhà Bán cam kết bảo hành là bao lâu? Nhà Bán cam kết thời gi... | +0.7082 | Có (top-1) — 2/2 | Thời gian bảo hành tối đa là 30 ngày đối với Nhà Bán, và đối với sản phẩm mới của Hoàng Hà... |
+
+==============================================================================
+A/B METADATA FILTER  (REPORT_NHOM mục 3)
+==============================================================================
+
+[fixed] câu 5 — KHÁC NHAU
+  có lọc   (2/2): ['tiki-seller-warranty-faq#4', 'tiki-seller-warranty-faq#15', 'tiki-seller-warranty-fbt#5']
+  KHÔNG lọc (1/2): ['hoanghamobile-warranty-buyer#1', 'tiki-seller-warranty-faq#4', 'hoanghamobile-warranty-buyer#14']
+
+[recursive] câu 5 — KHÁC NHAU
+  có lọc   (2/2): ['tiki-seller-warranty-faq#4', 'tiki-seller-warranty-faq#14', 'tiki-seller-warranty-faq#17']
+  KHÔNG lọc (2/2): ['tiki-seller-warranty-faq#4', 'hoanghamobile-warranty-buyer#1', 'shopee-warranty-buyer#4']
+
+[sentence] câu 5 — KHÁC NHAU
+  có lọc   (2/2): ['tiki-seller-warranty-faq#6', 'tiki-seller-warranty-faq#18', 'tiki-seller-warranty-faq#4']
+  KHÔNG lọc (2/2): ['tiki-seller-warranty-faq#6', 'hoanghamobile-warranty-buyer#12', 'hoanghamobile-warranty-buyer#18']

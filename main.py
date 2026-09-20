@@ -7,6 +7,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from src.agent import KnowledgeBaseAgent
+from src.chunking import RecursiveChunker
 from src.embeddings import (
     EMBEDDING_PROVIDER_ENV,
     GEMINI_EMBEDDING_MODEL,
@@ -30,9 +31,18 @@ SAMPLE_FILES = [
 ]
 
 
-def load_documents_from_files(file_paths: list[str]) -> list[Document]:
-    """Load documents from file paths for the manual demo."""
+CHUNK_SIZE = 600
+
+
+def load_documents_from_files(file_paths: list[str], chunk_size: int = CHUNK_SIZE) -> list[Document]:
+    """
+    Load files and split them into chunk-sized Documents for the manual demo.
+
+    One Document per chunk, not per file: embedding a whole document dilutes
+    the topic across thousands of characters and retrieval stops discriminating.
+    """
     allowed_extensions = {".md", ".txt"}
+    chunker = RecursiveChunker(chunk_size=chunk_size)
     documents: list[Document] = []
 
     for raw_path in file_paths:
@@ -47,13 +57,23 @@ def load_documents_from_files(file_paths: list[str]) -> list[Document]:
             continue
 
         content = path.read_text(encoding="utf-8")
-        documents.append(
-            Document(
-                id=path.stem,
-                content=content,
-                metadata={"source": str(path), "extension": path.suffix.lower()},
+        chunks = chunker.chunk(content)
+
+        for index, chunk in enumerate(chunks):
+            documents.append(
+                Document(
+                    # "stem#i" để EmbeddingStore._base_doc_id truy ngược chunk về file gốc
+                    id=f"{path.stem}#{index}",
+                    content=chunk,
+                    metadata={
+                        "source": str(path),
+                        "extension": path.suffix.lower(),
+                        "doc_id": path.stem,
+                        "chunk_index": index,
+                        "chunk_count": len(chunks),
+                    },
+                )
             )
-        )
 
     return documents
 
@@ -81,9 +101,15 @@ def run_manual_demo(question: str | None = None, sample_files: list[str] | None 
         print("  python3 main.py")
         return 1
 
-    print(f"\nLoaded {len(docs)} documents")
+    # Gom theo file thay vì in từng chunk: danh sách chunk dài vô ích trên terminal.
+    chunks_per_source: dict[str, int] = {}
     for doc in docs:
-        print(f"  - {doc.id}: {doc.metadata['source']}")
+        source = doc.metadata["source"]
+        chunks_per_source[source] = chunks_per_source.get(source, 0) + 1
+
+    print(f"\nLoaded {len(docs)} chunks from {len(chunks_per_source)} files (chunk_size={CHUNK_SIZE})")
+    for source, count in chunks_per_source.items():
+        print(f"  - {source}: {count} chunks")
 
     load_dotenv(override=False)
     provider = os.getenv(EMBEDDING_PROVIDER_ENV, "mock").strip().lower()
