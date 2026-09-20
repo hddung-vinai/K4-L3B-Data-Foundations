@@ -14,31 +14,45 @@
 
 ### Chủ đề (Domain) & Lý Do Chọn
 
-**Chủ đề:** [ví dụ: Customer support FAQ, Luật Việt Nam, công thức nấu ăn, ...]
+**Chủ đề:** Chính sách **bảo hành** trên nền tảng thương mại điện tử Việt Nam — nhìn từ **hai phía**: người mua (buyer) và nhà bán hàng (seller).
 
 **Tại sao nhóm chọn chủ đề này?**
-> *Viết 2-3 câu:*
+> Bảo hành là chủ đề mà cùng một khái niệm ("thời gian bảo hành", "hạn phản hồi") lại có **con số khác nhau tùy đối tượng đọc**: người mua thấy "12 tháng máy mới / 20–45 ngày làm việc", còn nhà bán hàng bị ràng buộc "cam kết tối đa 30 ngày, phản hồi trong 02 ngày làm việc". Đây chính là tình huống mà tìm kiếm ngữ nghĩa thuần túy sẽ trộn lẫn hai đáp án, buộc phải dùng `metadata_filter={"audience": ...}` mới trả lời đúng. Ngoài ra toàn bộ nguồn đều là trang chính sách công khai, không chứa dữ liệu cá nhân, phù hợp yêu cầu quản trị dữ liệu của lab.
 
 ### Danh sách tài liệu (Data Inventory)
 
 | # | Tên tài liệu | Nguồn (Source URL) | Ngày lấy / Phiên bản | Số ký tự | Metadata đã gán |
 |---|--------------|------------|--------------------|----------|-----------------|
-| 1 | | | | | |
-| 2 | | | | | |
-| 3 | | | | | |
-| 4 | | | | | |
-| 5 | | | | | |
+| 1 | Chính sách bảo hành Hoàng Hà Mobile dành cho khách mua | https://hoanghamobile.com/chinh-sach-bao-hanh | 2026-09-20 / áp dụng từ 29-09-2025 | 8.255 | `audience=buyer`, `category=warranty-policy`, `language=vi` |
+| 2 | Chính sách bảo hành cho sản phẩm mua tại Shopee | https://help.shopee.vn/portal/4/article/79046 | 2026-09-20 / not-stated | 3.210 | `audience=buyer`, `category=warranty-policy`, `language=vi` |
+| 3 | Câu hỏi thường gặp về xử lý đổi trả bảo hành cho Nhà Bán Hàng (Tiki) | https://hocvien.tiki.vn/faq/cau-hoi-thuong-gap-ve-xu-ly-doi-tra-bao-hanh/ | 2026-09-20 / not-stated | 14.054 | `audience=seller`, `category=warranty-process`, `language=vi` |
+| 4 | Quy trình xử lý đổi/trả/bảo hành — mô hình Dropship (Tiki) | https://hocvien.tiki.vn/faq/huong-dan-quy-trinh-xu-ly-doi-tra-bao-hanh-mo-hinh-dropship/ | 2026-09-20 / not-stated | 11.148 | `audience=seller`, `category=warranty-process`, `language=vi` |
+| 5 | Quy trình xử lý đổi/trả/bảo hành — mô hình SD (Tiki) | https://hocvien.tiki.vn/faq/huong-dan-quy-trinh-xu-ly-doi-tra-bao-hanh-mo-hinh-sd/ | 2026-09-20 / not-stated | 7.430 | `audience=seller`, `category=warranty-process`, `language=vi` |
+| 6 | Quy trình xử lý đổi/trả/bảo hành — mô hình FBT (Tiki) | https://hocvien.tiki.vn/faq/mo-hinh-fbt-huong-dan-quy-trinh-xu-ly-doi-tra-bao-hanh/ | 2026-09-20 / not-stated | 3.518 | `audience=seller`, `category=warranty-process`, `language=vi` |
+
+**Tổng:** 6 tài liệu · 47.615 ký tự · phân bố `audience`: buyer 2 / seller 4.
+
+**Ghi chú về tính minh bạch nguồn:**
+- Một URL ứng viên (`fptshop.com.vn/ho-tro/chinh-sach-bao-hanh`) bị **`robots.txt` của FPT Shop chặn**. Crawler báo `disallowed by robots.txt` và bỏ qua; nhóm **không dùng công cụ khác để lách** và loại URL này khỏi corpus.
+- `cellphones.com.vn/chinh-sach-bao-hanh` bị loại sau khi kiểm tra: trang chỉ là danh mục logo hãng, không chứa điều khoản bảo hành nào.
+- Chỉ tài liệu #1 nêu mốc hiệu lực trên trang gốc ("Áp dụng từ ngày 29/09/2025") nên được ghi vào `document_version`; 5 tài liệu còn lại để `not-stated`, **không suy đoán số hiệu**.
+- Toàn bộ output thô đã được làm sạch thủ công trước khi lưu (xoá menu, footer, danh sách gian hàng, bảng giá thu cũ đổi mới không liên quan). Ví dụ tài liệu #1 giảm từ ~19 KB xuống 8,3 KB.
 
 **Danh sách kiểm tra quản trị dữ liệu (Data governance checklist):**
-- [ ] Tập tài liệu (Corpus) chỉ chứa nguồn công khai/được phép dùng và không chứa dữ liệu cá nhân, thông tin đăng nhập hoặc tài liệu nội bộ.
-- [ ] Mỗi tài liệu có `source_url`, `retrieved_at`, `document_version` (hoặc ngày hiệu lực) trong metadata.
+- [x] Tập tài liệu (Corpus) chỉ chứa nguồn công khai/được phép dùng và không chứa dữ liệu cá nhân, thông tin đăng nhập hoặc tài liệu nội bộ.
+- [x] Mỗi tài liệu có `source_url`, `retrieved_at`, `document_version` (hoặc ngày hiệu lực) trong metadata.
 
 ### Cấu trúc Metadata (Metadata Schema)
 
 | Trường metadata | Kiểu | Ví dụ giá trị | Tại sao hữu ích cho truy xuất (retrieval)? |
 |----------------|------|---------------|-------------------------------|
-| | | | |
-| | | | |
+| `doc_id` | string | `tiki-seller-warranty-faq` | Khoá định danh duy nhất, trùng tên file — dùng để truy vết chunk về tài liệu gốc khi chấm gold answer. |
+| `audience` | enum (`buyer` \| `seller`) | `buyer` | **Trường lọc chính.** Cùng câu hỏi "bảo hành bao lâu?" cho hai đáp án khác nhau; `metadata_filter={"audience":"buyer"}` loại bỏ 4 tài liệu phía seller khỏi top-k. |
+| `category` | enum (`warranty-policy` \| `warranty-process`) | `warranty-process` | Tách *điều khoản quyền lợi* khỏi *quy trình vận hành*, giúp câu hỏi dạng "các bước xử lý" không bị chunk điều khoản lấn chỗ. |
+| `source_url` | string (URL) | `https://help.shopee.vn/portal/4/article/79046` | Trích dẫn nguồn trong câu trả lời, cho phép người đọc tự kiểm chứng. |
+| `retrieved_at` | date (ISO) | `2026-09-20` | Chính sách TMĐT thay đổi thường xuyên; cho biết dữ liệu cũ tới mức nào. |
+| `document_version` | string | `ap-dung-tu-2025-09-29` / `not-stated` | Phân biệt phiên bản hiệu lực khi hai bản chính sách cùng tồn tại; `not-stated` ghi rõ là trang gốc không nêu, tránh bịa. |
+| `language` | ISO 639-1 | `vi` | Toàn bộ corpus tiếng Việt; giữ trường này để sẵn sàng mở rộng đa ngữ mà không phải đổi schema. |
 
 ---
 
